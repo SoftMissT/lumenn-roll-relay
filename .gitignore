@@ -8,6 +8,7 @@
 !pnpm-lock.yaml
 !tsconfig.json
 !next.config.*
+!vercel.json
 
 # Node
 node_modules/
