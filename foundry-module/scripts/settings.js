@@ -9,26 +9,6 @@ Hooks.once("init", () => {
     requiresReload: false,
   });
 
-  game.settings.register("lumenn-roll-relay", "supabaseUrl", {
-    name: "Supabase URL",
-    hint: "URL do projeto Supabase (ex: https://xxxxx.supabase.co). Fornecido pelo administrador.",
-    scope: "world",
-    config: true,
-    type: String,
-    default: "",
-    requiresReload: false,
-  });
-
-  game.settings.register("lumenn-roll-relay", "supabaseAnonKey", {
-    name: "Supabase Anon Key",
-    hint: "Chave pública (anon) do Supabase. NÃO é a service_role.",
-    scope: "world",
-    config: true,
-    type: String,
-    default: "",
-    requiresReload: false,
-  });
-
   game.settings.register("lumenn-roll-relay", "enableRelay", {
     name: "Ativar Relay",
     hint: "Ativa/desativa o envio de rolagens ao Discord.",

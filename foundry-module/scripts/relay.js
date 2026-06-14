@@ -1,7 +1,14 @@
+// Configuracao fixa do backend Lumenn Relay. A anon key e publica por design;
+// o acesso real e limitado pelas policies RLS usando X-Lumenn-World-Token.
+const LUMENN_SUPABASE_URL = "https://buqhdfdqeqrhsibrwbsa.supabase.co";
+const LUMENN_SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cWhkZmRxZXFyaHNpYnJ3YnNhIiwi" +
+  "cm9sZSI6ImFub24iLCJpYXQiOjE3ODEzODEzODAsImV4cCI6MjA5Njk1NzM4MH0.qHnw0XZe58Uw4MmaEH_axXwx5PE4rlof3QalzAQu6Q4";
+
 export class RelayQueue {
-  constructor(supabaseUrl, supabaseAnonKey, worldToken) {
-    this.supabaseUrl = supabaseUrl.replace(/\/$/, "");
-    this.supabaseAnonKey = supabaseAnonKey;
+  constructor(worldToken) {
+    this.supabaseUrl = LUMENN_SUPABASE_URL.replace(/\/$/, "");
+    this.supabaseAnonKey = LUMENN_SUPABASE_ANON_KEY;
     this.worldToken = worldToken;
     this.queue = [];
     this.processing = false;

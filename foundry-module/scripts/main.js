@@ -12,15 +12,13 @@ Hooks.once("ready", () => {
   console.log(`Lumenn Roll Relay | Adapter: ${adapter.constructor.name} (sistema: ${systemId})`);
 
   const token = game.settings.get("lumenn-roll-relay", "worldToken");
-  const supabaseUrl = game.settings.get("lumenn-roll-relay", "supabaseUrl");
-  const supabaseAnonKey = game.settings.get("lumenn-roll-relay", "supabaseAnonKey");
 
-  if (!token || !supabaseUrl || !supabaseAnonKey) {
-    console.warn("Lumenn Roll Relay | Token ou credenciais Supabase não configurados. Relay desativado.");
+  if (!token) {
+    console.warn("Lumenn Roll Relay | World Token não configurado. Relay desativado.");
     return;
   }
 
-  relay = new RelayQueue(supabaseUrl, supabaseAnonKey, token);
+  relay = new RelayQueue(token);
   console.log("Lumenn Roll Relay | Relay ativado.");
 });
 
