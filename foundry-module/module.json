@@ -1,0 +1,27 @@
+{
+  "id": "lumenn-roll-relay",
+  "title": "Lumenn Roll Relay",
+  "description": "Retransmite rolagens do Foundry VTT para o Discord com leaderboard de críticos e falhas. Módulo não oficial criado pela Lumenn Moovies Produtora.",
+  "version": "0.1.0-alpha",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13"
+  },
+  "authors": [
+    {
+      "name": "Lumenn Moovies Produtora",
+      "discord": "softmisst",
+      "url": "https://github.com/SoftMissT/lumenn-roll-relay"
+    }
+  ],
+  "esmodules": ["scripts/main.js"],
+  "styles": ["styles/relay.css"],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "pt-BR", "name": "Português (Brasil)", "path": "lang/pt-BR.json" }
+  ],
+  "url": "https://github.com/SoftMissT/lumenn-roll-relay",
+  "bugs": "https://github.com/SoftMissT/lumenn-roll-relay/issues",
+  "readme": "README.md",
+  "license": "MIT"
+}
