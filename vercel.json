@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "packageManager": "pnpm@8.15.0",
+  "buildCommand": "cd hub && pnpm build",
+  "installCommand": "cd hub && pnpm install",
+  "devCommand": "cd hub && pnpm dev"
+}
