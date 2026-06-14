@@ -1,0 +1,13 @@
+# Segredos - NUNCA commitar
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+.next/
+out/
+
+# Misc
+.DS_Store
+*.log
