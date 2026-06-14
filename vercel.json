@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "buildCommand": "cd hub && npm run build",
-  "installCommand": "cd hub && npm install",
-  "devCommand": "cd hub && npm run dev"
+  "buildCommand": "cd hub && pnpm run build",
+  "installCommand": "cd hub && corepack enable && pnpm install",
+  "framework": "nextjs",
+  "outputDirectory": "hub/.next"
 }
