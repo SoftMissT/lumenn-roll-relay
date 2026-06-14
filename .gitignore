@@ -4,7 +4,6 @@
 .env.*.local
 *.json
 !package.json
-!package-lock.json
 !pnpm-lock.yaml
 !tsconfig.json
 !next.config.*
@@ -28,3 +27,12 @@ FOUNDRY_RULES.md
 Tree.md
 CLAUDE.md
 favicon.zip
+
+# Planning / sessao (local-only, NUNCA commitar)
+.planning.md
+*.planning.md
+_planning.md
+
+# Lock files npm/yarn (proibidos pela Constitution Art. II)
+package-lock.json
+yarn.lock
