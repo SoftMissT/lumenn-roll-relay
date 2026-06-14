@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     description: "Retransmita suas rolagens do Foundry VTT para o Discord",
     type: "website",
   },
+  icons: {
+    icon: "/favicon.svg",
+  },
 }
 
 export default function RootLayout({
