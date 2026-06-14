@@ -21,6 +21,8 @@
     { "lang": "pt-BR", "name": "Português (Brasil)", "path": "lang/pt-BR.json" }
   ],
   "url": "https://github.com/SoftMissT/lumenn-roll-relay",
+  "manifest": "https://github.com/SoftMissT/lumenn-roll-relay/releases/latest/download/module.json",
+  "download": "https://github.com/SoftMissT/lumenn-roll-relay/releases/latest/download/lumenn-roll-relay.zip",
   "bugs": "https://github.com/SoftMissT/lumenn-roll-relay/issues",
   "readme": "README.md",
   "license": "MIT"

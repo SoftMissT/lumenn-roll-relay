@@ -1,0 +1,47 @@
+name: Release Foundry Module
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish module release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Validate module manifest
+        run: node -e "JSON.parse(require('fs').readFileSync('foundry-module/module.json', 'utf8'))"
+
+      - name: Package Foundry module
+        run: |
+          mkdir -p dist
+          cp foundry-module/module.json dist/module.json
+          cd foundry-module
+          zip -r ../dist/lumenn-roll-relay.zip . -x "*.DS_Store"
+
+      - name: Verify package layout
+        run: |
+          unzip -l dist/lumenn-roll-relay.zip
+          unzip -l dist/lumenn-roll-relay.zip | grep -q "module.json"
+          if unzip -l dist/lumenn-roll-relay.zip | grep -q "foundry-module/module.json"; then
+            echo "module.json must be at the root of the zip, not inside foundry-module/"
+            exit 1
+          fi
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v3
+        with:
+          name: Lumenn Roll Relay ${{ github.ref_name }}
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          fail_on_unmatched_files: true
+          files: |
+            dist/module.json
+            dist/lumenn-roll-relay.zip
