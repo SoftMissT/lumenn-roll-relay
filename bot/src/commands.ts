@@ -59,14 +59,27 @@ export const configCommand: SlashCommand = {
   type: 1,
   options: [
     {
-      type: 1, // SUB_COMMAND
+      type: 1,
       name: "channel",
       description: "Define este canal como destino das rolagens do mundo vinculado.",
     },
     {
-      type: 1, // SUB_COMMAND
+      type: 1,
       name: "status",
       description: "Mostra o vínculo atual mundo↔canal.",
+    },
+    {
+      type: 1,
+      name: "unlink",
+      description: "Desvincula este servidor do mundo Foundry (requer Manage Guild).",
+      options: [
+        {
+          type: 5,
+          name: "confirm",
+          description: "Confirmar desvinculação — use True para confirmar.",
+          required: false,
+        },
+      ],
     },
   ],
 }
@@ -87,14 +100,26 @@ export const leaderboardCommand: SlashCommand = {
 
 export const resetCommand: SlashCommand = {
   name: "reset",
-  description: "Zera o leaderboard do mundo vinculado (requer Manage Guild).",
+  description: "Reseta o leaderboard ou regenera o token do mundo (requer Manage Guild).",
   type: 1,
   options: [
     {
-      type: 5, // BOOLEAN
-      name: "confirm",
-      description: "Confirmar o reset — apaga todas as rolagens registradas.",
-      required: false,
+      type: 1,
+      name: "leaderboard",
+      description: "Zera todas as rolagens do mundo vinculado.",
+      options: [
+        {
+          type: 5,
+          name: "confirm",
+          description: "Confirmar o reset — apaga todas as rolagens registradas.",
+          required: false,
+        },
+      ],
+    },
+    {
+      type: 1,
+      name: "token",
+      description: "Gera um novo World Token (o anterior será invalidado).",
     },
   ],
 }
