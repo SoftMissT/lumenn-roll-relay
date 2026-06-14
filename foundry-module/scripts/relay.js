@@ -4,6 +4,7 @@ const LUMENN_SUPABASE_URL = "https://buqhdfdqeqrhsibrwbsa.supabase.co";
 const LUMENN_SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1cWhkZmRxZXFyaHNpYnJ3YnNhIiwi" +
   "cm9sZSI6ImFub24iLCJpYXQiOjE3ODEzODEzODAsImV4cCI6MjA5Njk1NzM4MH0.qHnw0XZe58Uw4MmaEH_axXwx5PE4rlof3QalzAQu6Q4";
+const LUMENN_BOT_URL = "https://lumenn-roll-relay.lummen.deno.net";
 
 export class RelayQueue {
   constructor(worldToken) {
@@ -40,6 +41,30 @@ export class RelayQueue {
       }
     }
     this.processing = false;
+  }
+
+  async notifyBot(payload) {
+    try {
+      await fetch(`${LUMENN_BOT_URL}/relay`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Lumenn-World-Token": this.worldToken,
+        },
+        body: JSON.stringify({
+          formula: payload.formula,
+          result: payload.result,
+          is_critical: payload.is_critical,
+          is_fumble: payload.is_fumble,
+          roll_type: payload.roll_type,
+          system_data: payload.system_data,
+          display_name: payload.display_name,
+          foundry_user_id: payload.foundry_user_id,
+        }),
+      });
+    } catch (error) {
+      console.warn("Lumenn Roll Relay | Erro ao notificar bot (nao critico):", error.message);
+    }
   }
 
   async send(payload) {
@@ -135,6 +160,7 @@ export class RelayQueue {
             payload.is_critical ? " CRITICO" : ""
           }${payload.is_fumble ? " FALHA" : ""}`,
         );
+        this.notifyBot(payload);
         return true;
       }
 

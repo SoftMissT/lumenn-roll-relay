@@ -3,6 +3,8 @@
  *
  * Rotas:
  *   POST /         → Discord interactions (verificação Ed25519 obrigatória)
+ *   POST /relay    → Chamado pelo módulo Foundry após persistir rolagem no Supabase
+ *                    (autenticado com X-Lumenn-World-Token)
  *   POST /notify   → Chamado pela API Rust após persistir rolagem crítica/fumble
  *                    (autenticado com X-Bot-Internal-Key)
  *
@@ -15,6 +17,7 @@ import { handleLeaderboard } from "./src/handlers/leaderboard.ts"
 import { handleReset } from "./src/handlers/reset.ts"
 import { handleSetup } from "./src/handlers/setup.ts"
 import { handleRegistrar } from "./src/handlers/registrar.ts"
+import { handleRelay } from "./src/handlers/relay.ts"
 import { ephemeral, errorEmbed } from "./src/embeds.ts"
 import type { Interaction } from "./src/types.ts"
 
@@ -51,6 +54,10 @@ function parseEmbed(raw: unknown): NotifyEmbed | null {
 
 export async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url)
+
+  if (url.pathname === "/relay" && req.method === "POST") {
+    return handleRelay(req)
+  }
 
   if (url.pathname === "/notify" && req.method === "POST") {
     return handleNotify(req)

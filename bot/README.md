@@ -1,4 +1,4 @@
-# Lumenn Relay — Bot (Deno)
+# Lumenn Relay Bot (Deno)
 
 Bot Discord do **lumenn-roll-relay** via **HTTP Interactions** (sem gateway, ADR-003).
 Deploy no **Deno Deploy**. Fase 3 (esqueleto): handshake de verificação + `/ping`.
@@ -20,9 +20,9 @@ bot/
 
 Copie `.env.local.example` para `.env.local` e preencha (ver Discord Developer Portal):
 
-- `DISCORD_APP_ID` — General Information
-- `DISCORD_PUBLIC_KEY` — General Information (verifica assinaturas; não é segredo)
-- `DISCORD_BOT_TOKEN` — Bot (segredo; **rotacionar antes do 1º uso**, ERR-004)
+- `DISCORD_APP_ID` General Information
+- `DISCORD_PUBLIC_KEY` General Information (verifica assinaturas; não é segredo)
+- `DISCORD_BOT_TOKEN` Bot (segredo; **rotacionar antes do 1º uso**, ERR-004)
 
 ## Desenvolvimento local
 
