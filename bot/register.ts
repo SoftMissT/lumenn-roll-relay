@@ -1,28 +1,33 @@
 /**
- * Registra os slash commands globais do Lumenn Relay via API REST do Discord.
+ * Registra os slash commands do Lumenn Relay via API REST do Discord.
  *
- * Usa PUT (bulk overwrite): substitui o conjunto global de comandos pelo array
- * em `commands`. Rodar manualmente quando os comandos mudarem:
+ * Usa PUT (bulk overwrite). Dois modos:
  *
- *   deno task register
+ *   deno task register              → global (propaga em até 1h)
+ *   deno task register-guild        → guild específica (instantâneo, para testes)
  *
- * Requer as env vars DISCORD_APP_ID e DISCORD_BOT_TOKEN (ver .env.local.example).
- * O token NUNCA vai para o git — só em .env.local / secrets do Deno Deploy.
+ * Para registro de guild, define DISCORD_GUILD_ID no .env.local.
  *
- * Referência: https://discord.com/developers/docs/interactions/application-commands
+ * Requer DISCORD_APP_ID e DISCORD_BOT_TOKEN (ver .env.local.example).
  */
 
 import { commands } from "./src/commands.ts"
 
 const APP_ID = Deno.env.get("DISCORD_APP_ID")
 const BOT_TOKEN = Deno.env.get("DISCORD_BOT_TOKEN")
+const GUILD_ID = Deno.env.get("DISCORD_GUILD_ID") // opcional — só para registro de guild
 
 if (!APP_ID || !BOT_TOKEN) {
   console.error("Faltam DISCORD_APP_ID e/ou DISCORD_BOT_TOKEN no ambiente.")
   Deno.exit(1)
 }
 
-const url = `https://discord.com/api/v10/applications/${APP_ID}/commands`
+const url = GUILD_ID
+  ? `https://discord.com/api/v10/applications/${APP_ID}/guilds/${GUILD_ID}/commands`
+  : `https://discord.com/api/v10/applications/${APP_ID}/commands`
+
+const scope = GUILD_ID ? `guild ${GUILD_ID}` : "global"
+console.log(`Registrando comandos (${scope})…`)
 
 const res = await fetch(url, {
   method: "PUT",
@@ -40,4 +45,4 @@ if (!res.ok) {
 }
 
 const registered = (await res.json()) as Array<{ name: string }>
-console.log(`✓ ${registered.length} comando(s) registrado(s):`, registered.map((c) => c.name).join(", "))
+console.log(`✓ ${registered.length} comando(s) registrado(s) (${scope}):`, registered.map((c) => c.name).join(", "))
