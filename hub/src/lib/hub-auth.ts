@@ -1,6 +1,6 @@
 import type { User } from "@supabase/supabase-js"
 
-export const DEFAULT_SUPER_ADMIN_DISCORD_ID = "166973299702759424"
+export const SUPER_ADMIN_DISCORD_ID = process.env.SUPER_ADMIN_DISCORD_ID ?? ""
 
 export type AuthorizedUserRecord = {
   discord_id?: string | null
@@ -19,7 +19,7 @@ export function validateDiscordId(discordId: unknown): discordId is string {
 
 export function evaluateHubAuthorization({
   discordId,
-  superAdminDiscordId = DEFAULT_SUPER_ADMIN_DISCORD_ID,
+  superAdminDiscordId = SUPER_ADMIN_DISCORD_ID,
   record,
 }: {
   discordId: string
