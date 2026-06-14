@@ -1,6 +1,5 @@
 {
+  "installCommand": "cd hub && pnpm install --frozen-lockfile",
   "buildCommand": "cd hub && pnpm run build",
-  "installCommand": "cd hub && corepack enable && pnpm install",
-  "framework": "nextjs",
   "outputDirectory": "hub/.next"
 }
