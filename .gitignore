@@ -8,6 +8,7 @@
 !tsconfig.json
 !next.config.*
 !vercel.json
+!deno.json
 
 # Node
 node_modules/

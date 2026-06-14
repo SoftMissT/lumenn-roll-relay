@@ -1,0 +1,16 @@
+{
+  "tasks": {
+    "dev": "deno serve --allow-net --allow-env --watch mod.ts",
+    "start": "deno serve --allow-net --allow-env mod.ts",
+    "register": "deno run --allow-net --allow-env register.ts",
+    "test": "deno test --allow-env",
+    "check": "deno check ."
+  },
+  "imports": {
+    "jsr:@std/assert@1": "jsr:@std/assert@1"
+  },
+  "fmt": {
+    "semiColons": false,
+    "lineWidth": 100
+  }
+}
