@@ -2,6 +2,12 @@
 .env
 .env.local
 .env.*.local
+*.json
+!package.json
+!package-lock.json
+!pnpm-lock.yaml
+!tsconfig.json
+!next.config.*
 
 # Node
 node_modules/
@@ -11,3 +17,13 @@ out/
 # Misc
 .DS_Store
 *.log
+supabase/.temp/
+
+/.specs
+/.claude
+AGENTS.md
+LUMENN_RULES.md
+FOUNDRY_RULES.md
+Tree.md
+CLAUDE.md
+favicon.zip

@@ -1,26 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@400;500;700&family=Rajdhani:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Canvas / Fundos */
+  --canvas-void: #000000;
+  --canvas-base: #0A0A0A;
+  --canvas-deep: #0D1117;
+  --canvas-navy: #111827;
+
+  /* Crimson LUMENN */
+  --accent-primary: #D01452;
+  --accent-primary-hover: #E81A60;
+  --accent-primary-pressed: #B80F46;
+  --accent-primary-muted: rgba(208, 20, 82, 0.15);
+  --accent-primary-glow: rgba(208, 20, 82, 0.35);
+
+  /* Cyan Holographic */
+  --accent-holo: #00D4F5;
+  --accent-holo-dim: #0099B8;
+  --accent-holo-glow: rgba(0, 212, 245, 0.20);
+  --accent-holo-border: rgba(0, 212, 245, 0.15);
+  --accent-holo-text: #7DD8EC;
+  --accent-deep-navy: #1A3A5C;
+
+  /* Gold SAO */
+  --accent-gold: #C8A84B;
+  --accent-gold-bright: #FFD700;
+  --accent-gold-glow: rgba(200, 168, 75, 0.25);
+
+  /* Texto */
+  --text-primary: #EEF2FF;
+  --text-secondary: #8BA8C4;
+  --text-tertiary: #4A6880;
+  --text-on-primary: #FFFFFF;
+  --text-on-dark-primary: #000000;
+  --text-holo: #00D4F5;
+  --text-disabled: rgba(238, 242, 255, 0.35);
+
+  /* Bordas */
+  --border-glass: rgba(0, 212, 245, 0.12);
+  --border-panel: rgba(0, 212, 245, 0.06);
+  --border-accent: #D01452;
+  --border-subtle: rgba(238, 242, 255, 0.10);
+  --border-focus: #00D4F5;
+
+  /* Glass */
+  --glass-bg: rgba(0, 212, 245, 0.04);
+  --glass-bg-strong: rgba(0, 212, 245, 0.08);
+  --glass-border: rgba(0, 212, 245, 0.15);
+  --glass-border-hover: rgba(0, 212, 245, 0.30);
+  --glass-border-strong: rgba(0, 212, 245, 0.60);
+
+  /* Sombras */
+  --shadow-crimson-glow: 0 0 20px rgba(208, 20, 82, 0.25);
+  --shadow-crimson-glow-strong: 0 0 16px rgba(208, 20, 82, 0.45);
+  --shadow-cyan-glow: 0 0 12px rgba(0, 212, 245, 0.20);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--canvas-base);
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Fontes */
+.font-display {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+}
+
+.font-mono-hud {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Glass Panel */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+}
+
+.glass-panel-hover {
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-hover:hover {
+  border-color: var(--glass-border-hover);
+  background: var(--glass-bg-strong);
+  box-shadow: var(--shadow-cyan-glow);
+}
+
+/* Botão Crimson */
+.btn-crimson {
+  background: var(--accent-primary);
+  color: var(--text-on-primary);
+  border-radius: 4px;
+  padding: 12px 28px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-crimson:hover {
+  background: var(--accent-primary-hover);
+  box-shadow: var(--shadow-crimson-glow-strong);
+  transform: translateY(-1px);
+}
+
+.btn-crimson:active {
+  background: var(--accent-primary-pressed);
+  transform: translateY(0) scale(0.98);
+}
+
+/* Botão Glass */
+.btn-glass {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border-hover);
+  border-radius: 4px;
+  padding: 12px 28px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  transition: all 200ms ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-glass:hover {
+  border-color: var(--glass-border-strong);
+  background: var(--glass-bg);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--canvas-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-glass);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-holo-border);
+}
+
+/* Selection */
+::selection {
+  background: var(--accent-primary-muted);
+  color: var(--text-primary);
+}
+
+/* Focus */
+*:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+/* Keyframes */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-up-blur {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes ping-slow {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Animação de entrada */
+.animate-fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-up-blur {
+  animation: fade-up-blur 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
