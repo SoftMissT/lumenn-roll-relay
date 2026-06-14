@@ -2,7 +2,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 
 import {
-  DEFAULT_SUPER_ADMIN_DISCORD_ID,
+  SUPER_ADMIN_DISCORD_ID,
   evaluateHubAuthorization,
   getDiscordIdFromUser,
   type AuthorizedUserRecord,
@@ -65,7 +65,7 @@ export default async function AdminPage() {
     )
   }
 
-  const superAdminDiscordId = process.env.SUPER_ADMIN_DISCORD_ID || DEFAULT_SUPER_ADMIN_DISCORD_ID
+  const superAdminDiscordId = SUPER_ADMIN_DISCORD_ID
   const adminClient = createSupabaseAdminClient()
 
   const { data: ownRecord } = await adminClient

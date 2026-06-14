@@ -7,7 +7,7 @@ import {
   parseAdminUpdatePayload,
 } from "@/lib/admin-api"
 import {
-  DEFAULT_SUPER_ADMIN_DISCORD_ID,
+  SUPER_ADMIN_DISCORD_ID,
   getDiscordIdFromUser,
 } from "@/lib/hub-auth"
 import { createSupabaseAdminClient } from "@/lib/supabase-admin"
@@ -58,7 +58,7 @@ async function requireSuperAdmin(request: NextRequest) {
   }
 
   const discordId = getDiscordIdFromUser(user)
-  const superAdminDiscordId = process.env.SUPER_ADMIN_DISCORD_ID || DEFAULT_SUPER_ADMIN_DISCORD_ID
+  const superAdminDiscordId = SUPER_ADMIN_DISCORD_ID
 
   if (discordId !== superAdminDiscordId) {
     return {

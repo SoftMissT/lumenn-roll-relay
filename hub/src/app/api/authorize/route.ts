@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 
 import {
-  DEFAULT_SUPER_ADMIN_DISCORD_ID,
+  SUPER_ADMIN_DISCORD_ID,
   evaluateHubAuthorization,
   validateDiscordId,
   type AuthorizedUserRecord,
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
 
   const decision = evaluateHubAuthorization({
     discordId,
-    superAdminDiscordId: process.env.SUPER_ADMIN_DISCORD_ID || DEFAULT_SUPER_ADMIN_DISCORD_ID,
+    superAdminDiscordId: SUPER_ADMIN_DISCORD_ID,
     record: data,
   })
 
