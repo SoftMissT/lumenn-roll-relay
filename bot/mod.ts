@@ -13,6 +13,8 @@ import { verifyDiscordSignature } from "./src/verify.ts"
 import { handleConfig } from "./src/handlers/config.ts"
 import { handleLeaderboard } from "./src/handlers/leaderboard.ts"
 import { handleReset } from "./src/handlers/reset.ts"
+import { handleSetup } from "./src/handlers/setup.ts"
+import { handleRegistrar } from "./src/handlers/registrar.ts"
 import { ephemeral, errorEmbed } from "./src/embeds.ts"
 import type { Interaction } from "./src/types.ts"
 
@@ -84,10 +86,23 @@ export async function handler(req: Request): Promise<Response> {
 
   if (interaction.type === APPLICATION_COMMAND) {
     const name = interaction.data?.name
+    const receivedAt = Date.now()
 
     switch (name) {
-      case "ping":
-        return Response.json({ type: 4, data: { content: "Pong! Lumenn Relay online. 🎲", flags: 64 } })
+      case "ping": {
+        const latency = Date.now() - receivedAt
+        return Response.json({
+          type: 4,
+          data: {
+            content: `🏓 Pong! Lumenn Relay online.\n⏱️ Latência: ${latency}ms\n📡 Região: Deno Deploy`,
+            flags: 64,
+          },
+        })
+      }
+      case "setup":
+        return handleSetup(interaction)
+      case "registrar":
+        return handleRegistrar(interaction)
       case "config":
         return handleConfig(interaction)
       case "leaderboard":

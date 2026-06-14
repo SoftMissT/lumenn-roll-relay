@@ -23,28 +23,41 @@ export type SlashCommand = {
 
 export const pingCommand: SlashCommand = {
   name: "ping",
-  description: "Verifica se o Lumenn Relay está online.",
+  description: "Verifica se o Lumenn Relay está online e mostra latência.",
+  type: 1,
+}
+
+export const setupCommand: SlashCommand = {
+  name: "setup",
+  description: "Configura o Lumenn Relay neste servidor: gera token, cria canal e vincula ao mundo Foundry.",
+  type: 1,
+  options: [
+    {
+      type: 3, // STRING
+      name: "nome_do_mundo",
+      description: "Nome do mundo Foundry (ex: \"Campanha Aincrad\").",
+      required: true,
+    },
+    {
+      type: 3, // STRING
+      name: "categoria_id",
+      description: "ID da categoria onde criar o canal #lumenn-relay (opcional — deixe vazio para a raiz).",
+      required: false,
+    },
+  ],
+}
+
+export const registrarCommand: SlashCommand = {
+  name: "registrar",
+  description: "Registra você no mundo vinculado para rastrear suas rolagens no leaderboard.",
   type: 1,
 }
 
 export const configCommand: SlashCommand = {
   name: "config",
-  description: "Configura o Lumenn Relay neste servidor.",
+  description: "Gerencia a configuração do Lumenn Relay neste servidor.",
   type: 1,
   options: [
-    {
-      type: 1, // SUB_COMMAND
-      name: "setup",
-      description: "Vincula um mundo Foundry ao canal atual usando o world token.",
-      options: [
-        {
-          type: 3, // STRING
-          name: "token",
-          description: "World token gerado pelo módulo Foundry (Settings → Lumenn Relay).",
-          required: true,
-        },
-      ],
-    },
     {
       type: 1, // SUB_COMMAND
       name: "channel",
@@ -86,5 +99,12 @@ export const resetCommand: SlashCommand = {
   ],
 }
 
-/** Todos os comandos registrados globalmente. */
-export const commands: SlashCommand[] = [pingCommand, configCommand, leaderboardCommand, resetCommand]
+/** Todos os comandos registrados. */
+export const commands: SlashCommand[] = [
+  pingCommand,
+  setupCommand,
+  registrarCommand,
+  configCommand,
+  leaderboardCommand,
+  resetCommand,
+]

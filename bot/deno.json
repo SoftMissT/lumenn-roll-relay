@@ -2,8 +2,8 @@
   "tasks": {
     "dev": "deno serve --allow-net --allow-env --watch mod.ts",
     "start": "deno serve --allow-net --allow-env mod.ts",
-    "register": "deno run --allow-net --allow-env register.ts",
-    "register-guild": "deno run --allow-net --allow-env register.ts",
+    "register": "deno run --allow-net --allow-env --env-file=.env.local register.ts",
+    "register-guild": "deno run --allow-net --allow-env --env-file=.env.local register.ts",
     "test": "deno test --allow-env",
     "check": "deno check ."
   },

@@ -8,7 +8,7 @@ function hasManageGuild(permissions: string): boolean {
   return (BigInt(permissions) & MANAGE_GUILD) === MANAGE_GUILD
 }
 
-/** Handler para `/config setup|channel|status` (RF-018, RF-019). */
+/** Handler para `/config channel|status` (RF-019). O setup foi movido para `/setup`. */
 export async function handleConfig(interaction: Interaction): Promise<Response> {
   const guildId = interaction.guild_id
   if (!guildId) return ephemeral(errorEmbed("Erro", "Este comando só pode ser usado em servidores."))
@@ -19,55 +19,6 @@ export async function handleConfig(interaction: Interaction): Promise<Response> 
   const permissions = interaction.member?.permissions ?? "0"
 
   switch (subcommand.name) {
-    case "setup": {
-      if (!hasManageGuild(permissions)) {
-        return ephemeral(
-          errorEmbed("Sem permissão", "Apenas administradores do servidor podem configurar o Lumenn Relay."),
-        )
-      }
-
-      const token = String(subcommand.options?.find((o) => o.name === "token")?.value ?? "")
-      if (!token) return ephemeral(errorEmbed("Erro", "Token não fornecido."))
-
-      const { data: world, error } = await db
-        .from("worlds")
-        .select("id, foundry_world_name, discord_guild_id")
-        .eq("world_token", token)
-        .single()
-
-      if (error || !world) {
-        return ephemeral(
-          errorEmbed("Token inválido", "Nenhum mundo encontrado com esse token. Verifique no módulo Foundry."),
-        )
-      }
-
-      // Previne tenant hijack: rejeita rebind se o mundo já está vinculado a outro servidor.
-      if (world.discord_guild_id && world.discord_guild_id !== guildId) {
-        return ephemeral(
-          errorEmbed(
-            "Token já em uso",
-            "Este token já está vinculado a outro servidor. Solicite um novo token no módulo Foundry (Settings → Lumenn Relay → Regenerar token).",
-          ),
-        )
-      }
-
-      const { error: updateError } = await db
-        .from("worlds")
-        .update({ discord_guild_id: guildId, discord_channel_id: interaction.channel_id })
-        .eq("id", world.id)
-
-      if (updateError) {
-        return ephemeral(errorEmbed("Erro", "Falha ao vincular o mundo. Tente novamente."))
-      }
-
-      return message(
-        successEmbed(
-          "✅ Mundo vinculado!",
-          `**${world.foundry_world_name}** foi vinculado a este canal.\nRolagens críticas e fumbles serão retransmitidas aqui.`,
-        ),
-      )
-    }
-
     case "channel": {
       if (!hasManageGuild(permissions)) {
         return ephemeral(errorEmbed("Sem permissão", "Apenas administradores podem alterar o canal."))

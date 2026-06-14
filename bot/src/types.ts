@@ -13,7 +13,8 @@ export type Interaction = {
   channel_id?: string
   member?: {
     permissions?: string
-    user?: { id?: string }
+    nick?: string
+    user?: { id?: string; username?: string; global_name?: string }
   }
   data?: {
     name?: string
