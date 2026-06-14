@@ -83,7 +83,8 @@ export class RelayQueue {
       let playerId = players?.[0]?.id;
 
       if (!playerId) {
-        const createRes = await fetch(`${this.supabaseUrl}/rest/v1/players`, {
+        const createPlayerQuery = new URLSearchParams({ select: "id" });
+        const createRes = await fetch(`${this.supabaseUrl}/rest/v1/players?${createPlayerQuery.toString()}`, {
           method: "POST",
           headers: {
             ...headers,
