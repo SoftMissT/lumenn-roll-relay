@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "cd hub && pnpm install && cd hub && pnpm build",
-  "installCommand": "cd hub && pnpm install",
-  "devCommand": "cd hub && pnpm dev"
+  "buildCommand": "cd hub && npm run build",
+  "installCommand": "cd hub && npm install",
+  "devCommand": "cd hub && npm run dev"
 }
