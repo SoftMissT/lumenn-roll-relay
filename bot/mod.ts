@@ -24,6 +24,29 @@ const PUBLIC_KEY = Deno.env.get("DISCORD_PUBLIC_KEY") ?? ""
 const BOT_TOKEN = Deno.env.get("DISCORD_BOT_TOKEN") ?? ""
 const BOT_INTERNAL_KEY = Deno.env.get("BOT_INTERNAL_KEY") ?? ""
 
+/** Snowflake Discord: 1–20 dígitos numéricos. Previne path injection na URL da API. */
+const SNOWFLAKE_RE = /^\d{1,20}$/
+
+type NotifyEmbed = {
+  title?: string
+  description?: string
+  color?: number
+}
+
+/** Constrói embed validado a partir de entrada não-confiável (previne forwarding de objeto arbitrário). */
+function parseEmbed(raw: unknown): NotifyEmbed | null {
+  if (typeof raw !== "object" || raw === null || Array.isArray(raw)) return null
+  const e = raw as Record<string, unknown>
+  return {
+    title: typeof e.title === "string" ? e.title.slice(0, 256) : undefined,
+    description: typeof e.description === "string" ? e.description.slice(0, 4096) : undefined,
+    // cor válida: inteiro 0..0xFFFFFF
+    color: typeof e.color === "number" && Number.isInteger(e.color) && e.color >= 0 && e.color <= 0xffffff
+      ? e.color
+      : undefined,
+  }
+}
+
 export async function handler(req: Request): Promise<Response> {
   const url = new URL(req.url)
 
@@ -93,9 +116,20 @@ async function handleNotify(req: Request): Promise<Response> {
     return new Response("invalid payload", { status: 400 })
   }
 
-  const { discord_channel_id, embed } = body
-  if (!discord_channel_id || !embed) {
+  const { discord_channel_id, embed: rawEmbed } = body
+  if (!discord_channel_id || !rawEmbed) {
     return new Response("missing fields: discord_channel_id, embed", { status: 400 })
+  }
+
+  // Valida snowflake antes de interpolar na URL (previne path injection).
+  if (!SNOWFLAKE_RE.test(discord_channel_id)) {
+    return new Response("invalid discord_channel_id", { status: 400 })
+  }
+
+  // Constrói embed a partir de primitivos validados (previne forwarding de objeto arbitrário).
+  const embed = parseEmbed(rawEmbed)
+  if (!embed) {
+    return new Response("invalid embed", { status: 400 })
   }
 
   const res = await fetch(`${DISCORD_API}/channels/${discord_channel_id}/messages`, {

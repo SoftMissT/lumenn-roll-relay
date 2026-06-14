@@ -9,6 +9,7 @@
   "imports": {
     "jsr:@std/assert@1": "jsr:@std/assert@1"
   },
+  "nodeModulesDir": "auto",
   "fmt": {
     "semiColons": false,
     "lineWidth": 100

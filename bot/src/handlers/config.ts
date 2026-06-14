@@ -31,13 +31,23 @@ export async function handleConfig(interaction: Interaction): Promise<Response> 
 
       const { data: world, error } = await db
         .from("worlds")
-        .select("id, foundry_world_name")
+        .select("id, foundry_world_name, discord_guild_id")
         .eq("world_token", token)
         .single()
 
       if (error || !world) {
         return ephemeral(
           errorEmbed("Token inválido", "Nenhum mundo encontrado com esse token. Verifique no módulo Foundry."),
+        )
+      }
+
+      // Previne tenant hijack: rejeita rebind se o mundo já está vinculado a outro servidor.
+      if (world.discord_guild_id && world.discord_guild_id !== guildId) {
+        return ephemeral(
+          errorEmbed(
+            "Token já em uso",
+            "Este token já está vinculado a outro servidor. Solicite um novo token no módulo Foundry (Settings → Lumenn Relay → Regenerar token).",
+          ),
         )
       }
 
