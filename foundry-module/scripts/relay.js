@@ -45,7 +45,7 @@ export class RelayQueue {
 
   async notifyBot(payload) {
     try {
-      await fetch(`${LUMENN_BOT_URL}/relay`, {
+      const res = await fetch(`${LUMENN_BOT_URL}/relay`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,8 +64,11 @@ export class RelayQueue {
           image_url: payload.image_url,
         }),
       });
+      if (!res.ok) {
+        console.warn(`Lumenn Roll Relay | Bot retornou erro ${res.status}: ${await res.text()}`);
+      }
     } catch (error) {
-      console.warn("Lumenn Roll Relay | Erro ao notificar bot (nao critico):", error.message);
+      console.error("Lumenn Roll Relay | Erro ao notificar bot:", error.message);
     }
   }
 

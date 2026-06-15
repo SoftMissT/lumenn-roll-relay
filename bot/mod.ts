@@ -53,16 +53,28 @@ function parseEmbed(raw: unknown): NotifyEmbed | null {
   }
 }
 
+/** Adiciona headers CORS para permitir chamadas do Foundry module. */
+function cors(res: Response): Response {
+  res.headers.set("Access-Control-Allow-Origin", "*")
+  res.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS")
+  res.headers.set("Access-Control-Allow-Headers", "Content-Type, X-Lumenn-World-Token")
+  return res
+}
+
 export async function handler(req: Request): Promise<Response> {
   const receivedAt = Date.now()
   const url = new URL(req.url)
 
+  if (req.method === "OPTIONS") {
+    return cors(new Response(null, { status: 204 }))
+  }
+
   if (url.pathname === "/relay" && req.method === "POST") {
-    return handleRelay(req)
+    return cors(await handleRelay(req))
   }
 
   if (url.pathname === "/notify" && req.method === "POST") {
-    return handleNotify(req)
+    return cors(await handleNotify(req))
   }
 
   if (req.method !== "POST") {
