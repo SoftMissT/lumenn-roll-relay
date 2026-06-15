@@ -3,7 +3,7 @@ import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Termos de Servico | Lumenn Relay",
-  description: "Termos de Servico do Lumenn Relay.",
+  description: "Termos de Servico do Lumenn Relay — modulo nao oficial para Foundry VTT.",
 }
 
 const acceptableUseItems = [
@@ -73,6 +73,27 @@ const sections = [
   },
 ]
 
+const foundrySections = [
+  {
+    title: "11. Conformidade com Foundry VTT",
+    body: [
+      "Este modulo segue as diretrizes de marca da Foundry Gaming LLC. O titulo 'Lumenn Roll Relay' nao utiliza o nome 'Foundry Virtual Tabletop' nem sugere afiliacao oficial. O nome completo e referenciado apenas em texto descritivo, conforme permitido pelas Brand Guidelines.",
+      'O modulo e distribuido como "package" nos termos da Foundry VTT Limited License for Package Development. Ele e projetado para funcionar exclusivamente com uma copia licenciada do Foundry Virtual Tabletop e nao opera de forma independente.',
+    ],
+  },
+  {
+    title: "12. Politica de IA (Foundry VTT AI Content Policy)",
+    body: [
+      "O codigo do Lumenn Relay utiliza assistencia de IA generativa no processo de desenvolvimento. Em conformidade com a Foundry VTT AI Content Policy (18 de marco de 2026):",
+      "• O autor (Nelson/softmisst) compreende, revisa e mantem cada parte do codigo gerado. Nao e 'vibe coding' sem compreensao.",
+      "• Toda decisao de arquitetura passa por revisao humana antes da implementacao.",
+      "• Especificacoes e documentacao sao versionadas para auditoria.",
+      "• O modulo nao gera conteudo de IA em runtime para usuarios finais.",
+      "• Este pacote seria categorizado como 'AI Tools' se submetido a listagem oficial, pois utiliza ferramentas de IA no desenvolvimento de codigo.",
+    ],
+  },
+]
+
 export default function TermsPage() {
   return (
     <main className="min-h-screen bg-[#0A0A0A] px-6 py-12 text-[#EEF2FF]">
@@ -126,6 +147,10 @@ export default function TermsPage() {
           </section>
 
           {sections.slice(3).map((section) => (
+            <LegalSection key={section.title} {...section} />
+          ))}
+
+          {foundrySections.map((section) => (
             <LegalSection key={section.title} {...section} />
           ))}
         </section>

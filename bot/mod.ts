@@ -18,6 +18,7 @@ import { handleReset } from "./src/handlers/reset.ts"
 import { handleSetup } from "./src/handlers/setup.ts"
 import { handleRegistrar } from "./src/handlers/registrar.ts"
 import { handleRelay } from "./src/handlers/relay.ts"
+import { handleHelp } from "./src/handlers/help.ts"
 import { ephemeral, errorEmbed } from "./src/embeds.ts"
 import type { Interaction } from "./src/types.ts"
 
@@ -53,6 +54,7 @@ function parseEmbed(raw: unknown): NotifyEmbed | null {
 }
 
 export async function handler(req: Request): Promise<Response> {
+  const receivedAt = Date.now()
   const url = new URL(req.url)
 
   if (url.pathname === "/relay" && req.method === "POST") {
@@ -93,7 +95,6 @@ export async function handler(req: Request): Promise<Response> {
 
   if (interaction.type === APPLICATION_COMMAND) {
     const name = interaction.data?.name
-    const receivedAt = Date.now()
 
     switch (name) {
       case "ping": {
@@ -101,7 +102,7 @@ export async function handler(req: Request): Promise<Response> {
         return Response.json({
           type: 4,
           data: {
-            content: `🏓 Pong! Lumenn Relay online.\n⏱️ Latência: ${latency}ms\n📡 Região: Deno Deploy`,
+            content: `🏓 Pong! Lumenn Relay online.\n⏱️ Latência: ${latency}ms`,
             flags: 64,
           },
         })
@@ -116,6 +117,8 @@ export async function handler(req: Request): Promise<Response> {
         return handleLeaderboard(interaction)
       case "reset":
         return handleReset(interaction)
+      case "help":
+        return handleHelp(interaction)
       default:
         return ephemeral(errorEmbed("Comando desconhecido", "Este comando não está disponível."))
     }

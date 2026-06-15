@@ -58,6 +58,7 @@ function Navbar() {
             { label: 'Funcionalidades', href: '#features' },
             { label: 'Status', href: '#status' },
             { label: 'Acesso', href: '#cta' },
+            { label: 'Dashboard', href: '/dashboard' },
           ].map((item) => (
             <a
               key={item.href}
@@ -70,9 +71,14 @@ function Navbar() {
         </nav>
 
         {/* CTA */}
-        <DiscordLoginButton className="btn-crimson text-sm py-2 px-5">
-          Entrar
-        </DiscordLoginButton>
+        <div className="flex items-center gap-3">
+          <Link href="/dashboard" className="btn-glass text-sm py-2 px-5">
+            Dashboard
+          </Link>
+          <DiscordLoginButton className="btn-crimson text-sm py-2 px-5">
+            Entrar
+          </DiscordLoginButton>
+        </div>
       </div>
     </header>
   )
@@ -102,10 +108,6 @@ function Hero() {
       <div className="absolute inset-0 z-0">
         <div className="w-full h-full" style={{ minHeight: '100vh' }}>
           <DiceSoNice
-            diceType="d20"
-            diceColor={0xb1121a}
-            textColor="#FFD27A"
-            backgroundColor="#5A0A0A"
             autoRoll
             autoRollDelay={1000}
             onRoll={(result) => setRollResult(result)}
@@ -467,10 +469,9 @@ function Footer() {
 
         {/* Links */}
         <div className="flex items-center gap-8 text-[13px] text-[#8BA8C4]">
-          <a href="/terms" className="hover:text-[#00D4F5] transition-colors duration-200">Termos</a>
-          <a href="/privacy" className="hover:text-[#00D4F5] transition-colors duration-200">Privacidade</a>
-          <a href="https://github.com/lumenn/relay" className="hover:text-[#00D4F5] transition-colors duration-200">GitHub</a>
-          <a href="https://discord.gg/lumenn" className="hover:text-[#00D4F5] transition-colors duration-200">Discord</a>
+          <Link href="/terms" className="hover:text-[#00D4F5] transition-colors duration-200">Termos</Link>
+          <Link href="/privacy" className="hover:text-[#00D4F5] transition-colors duration-200">Privacidade</Link>
+          <a href="https://github.com/SoftMissT/lumenn-roll-relay" target="_blank" rel="noopener noreferrer" className="hover:text-[#00D4F5] transition-colors duration-200">GitHub</a>
         </div>
 
         {/* Version */}

@@ -62,6 +62,15 @@ export default function DashboardClient({
               </p>
             </div>
             <div className="flex gap-3">
+              <Link href="/" className="btn-glass text-sm py-2 px-4">
+                Início
+              </Link>
+              <Link href="/terms" className="btn-glass text-sm py-2 px-4">
+                Termos
+              </Link>
+              <Link href="/privacy" className="btn-glass text-sm py-2 px-4">
+                Privacidade
+              </Link>
               {isSuperAdmin && (
                 <Link href="/admin" className="btn-glass text-sm py-2 px-4">
                   Allowlist

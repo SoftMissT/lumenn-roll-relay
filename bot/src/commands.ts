@@ -132,4 +132,9 @@ export const commands: SlashCommand[] = [
   configCommand,
   leaderboardCommand,
   resetCommand,
+  {
+    name: "help",
+    description: "Mostra todos os comandos disponiveis do Lumenn Relay.",
+    type: 1,
+  },
 ]

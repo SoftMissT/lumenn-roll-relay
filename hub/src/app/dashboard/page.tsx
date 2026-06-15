@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation"
+import Link from "next/link"
 
 import {
   SUPER_ADMIN_DISCORD_ID,
@@ -9,6 +9,26 @@ import {
 import { createSupabaseAdminClient } from "@/lib/supabase-admin"
 import { createSupabaseServerClient } from "@/lib/supabase-server"
 import DashboardClient from "@/components/DashboardClient"
+import DiscordLoginButton from "@/components/DiscordLoginButton"
+
+function NotAuthorizedPage({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <main className="min-h-screen bg-[var(--canvas-base)] flex items-center justify-center px-6">
+      <div className="glass-panel p-10 max-w-md w-full text-center">
+        <p className="mb-3 font-mono-hud text-[10px] uppercase tracking-[0.2em] text-[var(--text-holo)]">
+          Lumenn Relay
+        </p>
+        <h1 className="mb-6 font-display text-[40px] leading-none text-[var(--text-primary)]">{title}</h1>
+        <div className="text-[15px] leading-relaxed text-[var(--text-secondary)]">{children}</div>
+        <div className="mt-8 flex flex-col gap-3">
+          <Link href="/" className="btn-glass w-full justify-center">
+            Voltar ao Início
+          </Link>
+        </div>
+      </div>
+    </main>
+  )
+}
 
 export const dynamic = "force-dynamic"
 
@@ -52,10 +72,27 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) redirect("/")
+  if (!user) {
+    return (
+      <NotAuthorizedPage title="Login Necessário">
+        <p>Você precisa estar logado com Discord para acessar o dashboard.</p>
+        <div className="mt-6 flex justify-center">
+          <DiscordLoginButton className="btn-crimson text-sm py-3 px-8">
+            Entrar com Discord
+          </DiscordLoginButton>
+        </div>
+      </NotAuthorizedPage>
+    )
+  }
 
   const discordId = getDiscordIdFromUser(user)
-  if (!discordId) redirect("/")
+  if (!discordId) {
+    return (
+      <NotAuthorizedPage title="Discord não identificado">
+        Sua sessão existe, mas o Hub não encontrou um Discord ID no provedor OAuth. Tente fazer login novamente.
+      </NotAuthorizedPage>
+    )
+  }
 
   const adminClient = createSupabaseAdminClient()
 
@@ -71,7 +108,13 @@ export default async function DashboardPage() {
     record: ownRecord,
   })
 
-  if (!decision.authorized) redirect("/")
+  if (!decision.authorized) {
+    return (
+      <NotAuthorizedPage title="Acesso Pendente">
+        Seu Discord ID <code className="font-mono-hud text-[var(--text-primary)] bg-[var(--canvas-deep)] px-2 py-0.5 rounded">{discordId}</code> ainda não está aprovado na allowlist do Lumenn Relay.
+      </NotAuthorizedPage>
+    )
+  }
 
   const isSuperAdmin = discordId === SUPER_ADMIN_DISCORD_ID
 
