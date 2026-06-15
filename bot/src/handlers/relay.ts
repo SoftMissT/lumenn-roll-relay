@@ -1,4 +1,5 @@
 import { db } from "../supabase.ts"
+import { upsertLeaderboardMessage } from "./leaderboard-pin.ts"
 
 const DISCORD_API = "https://discord.com/api/v10"
 const BOT_TOKEN = Deno.env.get("DISCORD_BOT_TOKEN") ?? ""
@@ -20,6 +21,7 @@ type RollPayload = {
   foundry_user_id: string
   discord_id: string | null
   image_url: string | null
+  character_name: string | null
 }
 
 export async function handleRelay(req: Request): Promise<Response> {
@@ -112,6 +114,14 @@ export async function handleRelay(req: Request): Promise<Response> {
       status: 502,
       headers: { "Content-Type": "application/json" },
     })
+  }
+
+  // Apos postar o embed individual, atualiza (ou cria/fixa) o placar fixo do
+  // mundo no mesmo canal. Falha aqui nao deve invalidar o relay ja concluido.
+  try {
+    await upsertLeaderboardMessage(world.id, world.discord_channel_id)
+  } catch (e) {
+    console.error("Lumenn Relay | Erro ao atualizar leaderboard fixo:", e)
   }
 
   return new Response(null, { status: 204 })
