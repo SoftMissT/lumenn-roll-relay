@@ -43,6 +43,10 @@ Hooks.on("createChatMessage", (message, _options, userId) => {
 });
 
 function processRoll(message, userId) {
+  const user = game.users.get(userId);
+  if (!user) return;
+  if (user.isGM && game.settings.get("lumenn-roll-relay", "hideGMRolls")) return;
+
   const rollData = adapter.detectRoll(message);
   if (!rollData) return;
 

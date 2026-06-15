@@ -249,6 +249,11 @@ body {
   100% { transform: rotate(360deg) scale(1.05); }
 }
 
+@keyframes orbit-spin {
+  0% { transform: rotate(-15deg); }
+  100% { transform: rotate(345deg); }
+}
+
 /* Animação de entrada */
 .animate-fade-up {
   animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;

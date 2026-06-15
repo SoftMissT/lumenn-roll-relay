@@ -26,4 +26,13 @@ Hooks.once("init", () => {
     type: Boolean,
     default: true,
   });
+
+  game.settings.register("lumenn-roll-relay", "hideGMRolls", {
+    name: "Ocultar Rolagens do GM",
+    hint: "Se ativado, rolagens do GM (mestre) não são enviadas ao Discord. Apenas rolagens de jogadores.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+  });
 });
