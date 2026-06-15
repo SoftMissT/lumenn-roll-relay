@@ -3,5 +3,20 @@
   "LUMENN_ROLL_RELAY.settings.worldToken.name": "Token do Mundo",
   "LUMENN_ROLL_RELAY.settings.worldToken.hint": "Token gerado pelo bot Lumenn Relay no Discord (comando /setup).",
   "LUMENN_ROLL_RELAY.settings.enableRelay.name": "Ativar Relay",
-  "LUMENN_ROLL_RELAY.settings.hideBlindRolls.name": "Ocultar Rolagens Secretas"
+  "LUMENN_ROLL_RELAY.settings.hideBlindRolls.name": "Ocultar Rolagens Secretas",
+  "LUMENN_ROLL_RELAY.settings.hideGMRolls.name": "Ocultar Rolagens do GM",
+  "LUMENN_ROLL_RELAY.settings.hideGMRolls.hint": "Se ativado, rolagens do Mestre nao sao enviadas ao Discord.",
+  "LUMENN.PlayerConfigTitle": "Configurar Jogador — Lumenn Relay",
+  "LUMENN.PlayerConfigHint": "Configure seu Discord ID e a imagem do seu personagem para aparecer no leaderboard. Estes dados sao enviados junto com suas rolagens.",
+  "LUMENN.PlayerConfigDiscordId": "Discord ID",
+  "LUMENN.PlayerConfigDiscordIdHint": "Seu ID numerico do Discord (17-20 digitos). Use o Modo Desenvolvedor do Discord para copia-lo.",
+  "LUMENN.PlayerConfigImageUrl": "Imagem do Personagem (URL)",
+  "LUMENN.PlayerConfigImageUrlHint": "Link direto para uma imagem 9:16 do seu personagem (Imgur, Pinterest, etc). Aparece no leaderboard.",
+  "LUMENN.PlayerConfigDisplayName": "Nome no Foundry",
+  "LUMENN.PlayerConfigDisplayNameHint": "Este nome e usado no leaderboard. Altere-o nas configuracoes do Foundry.",
+  "LUMENN.PlayerConfigSave": "Salvar Configuracao",
+  "LUMENN.PlayerConfigSaved": "Configuracao do jogador salva com sucesso!",
+  "LUMENN.PlayerConfigInvalidDiscordId": "Discord ID invalido. Deve conter 17-20 digitos numericos.",
+  "LUMENN.PlayerConfigInvalidImageUrl": "URL da imagem invalida. Deve comecar com http:// ou https://",
+  "LUMENN.PlayerConfigButton": "Configurar Jogador Lumenn"
 }

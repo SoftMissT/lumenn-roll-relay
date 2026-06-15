@@ -37,6 +37,7 @@ type PlayerRow = {
   display_name: string
   foundry_user_id: string
   discord_id: string | null
+  image_url: string | null
 }
 
 type RollRow = {
@@ -48,7 +49,7 @@ type RollRow = {
   is_fumble: boolean
   roll_type: string | null
   created_at: string
-  players: { display_name: string; foundry_user_id: string } | null
+  players: { display_name: string; foundry_user_id: string; image_url: string | null } | null
 }
 
 type WorldRow = {
@@ -61,6 +62,7 @@ type WorldRow = {
 type LeaderboardEntry = {
   playerId: string
   displayName: string
+  imageUrl: string | null
   criticals: number
   fumbles: number
   totalRolls: number
@@ -136,7 +138,7 @@ export default async function DashboardPage() {
   if (worldIds.length > 0) {
     const { data: playerData } = await adminClient
       .from("players")
-      .select("id, display_name, foundry_user_id, discord_id")
+      .select("id, display_name, foundry_user_id, discord_id, image_url")
       .in("world_id", worldIds)
       .returns<PlayerRow[]>()
     players = playerData ?? []
@@ -193,7 +195,7 @@ function buildLeaderboard(players: PlayerRow[], rolls: RollRow[]): LeaderboardEn
   return Array.from(stats.entries())
     .map(([id, s]) => {
       const p = players.find((pl) => pl.foundry_user_id === id)
-      return { playerId: id, displayName: p?.display_name ?? "Desconhecido", ...s }
+      return { playerId: id, displayName: p?.display_name ?? "Desconhecido", imageUrl: p?.image_url ?? null, ...s }
     })
     .sort((a, b) => b.criticals - a.criticals || b.totalRolls - a.totalRolls)
     .slice(0, 20)

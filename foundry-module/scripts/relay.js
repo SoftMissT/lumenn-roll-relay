@@ -60,6 +60,8 @@ export class RelayQueue {
           system_data: payload.system_data,
           display_name: payload.display_name,
           foundry_user_id: payload.foundry_user_id,
+          discord_id: payload.discord_id,
+          image_url: payload.image_url,
         }),
       });
     } catch (error) {
@@ -94,7 +96,7 @@ export class RelayQueue {
       const playerQuery = new URLSearchParams({
         world_id: `eq.${worldId}`,
         foundry_user_id: `eq.${payload.foundry_user_id}`,
-        select: "id",
+        select: "id,discord_id,image_url",
       });
       const playerRes = await fetch(`${this.supabaseUrl}/rest/v1/players?${playerQuery.toString()}`, {
         headers,
@@ -106,6 +108,27 @@ export class RelayQueue {
 
       const players = await playerRes.json();
       let playerId = players?.[0]?.id;
+
+      if (playerId && (payload.discord_id || payload.image_url)) {
+        const needsUpdate = {};
+        if (payload.discord_id && players[0].discord_id !== payload.discord_id) {
+          needsUpdate.discord_id = payload.discord_id;
+        }
+        if (payload.image_url && players[0].image_url !== payload.image_url) {
+          needsUpdate.image_url = payload.image_url;
+        }
+        if (Object.keys(needsUpdate).length > 0) {
+          await fetch(`${this.supabaseUrl}/rest/v1/players?id=eq.${playerId}`, {
+            method: "PATCH",
+            headers: {
+              ...headers,
+              "Content-Type": "application/json",
+              "Prefer": "return=minimal",
+            },
+            body: JSON.stringify(needsUpdate),
+          });
+        }
+      }
 
       if (!playerId) {
         const createPlayerQuery = new URLSearchParams({ select: "id" });
@@ -120,6 +143,8 @@ export class RelayQueue {
             world_id: worldId,
             foundry_user_id: payload.foundry_user_id,
             display_name: payload.display_name,
+            discord_id: payload.discord_id || null,
+            image_url: payload.image_url || null,
           }),
         });
 

@@ -18,6 +18,8 @@ type RollPayload = {
   system_data: Record<string, unknown> | null
   display_name: string
   foundry_user_id: string
+  discord_id: string | null
+  image_url: string | null
 }
 
 export async function handleRelay(req: Request): Promise<Response> {
@@ -79,21 +81,28 @@ export async function handleRelay(req: Request): Promise<Response> {
     fields.push({ name: "Tipo", value: payload.roll_type, inline: true })
   }
 
+  const embed: Record<string, unknown> = {
+    title,
+    color,
+    fields,
+    footer: { text: `Lumenn Relay • ${world.foundry_world_name}` },
+    timestamp: new Date().toISOString(),
+  }
+
+  if (payload.image_url) {
+    embed.thumbnail = { url: payload.image_url }
+  }
+  if (payload.discord_id) {
+    embed.author = { name: `Jogador: ${payload.display_name}`, icon_url: `https://cdn.discordapp.com/avatars/${payload.discord_id}/0.png?size=128` }
+  }
+
   const res = await fetch(`${DISCORD_API}/channels/${world.discord_channel_id}/messages`, {
     method: "POST",
     headers: {
       Authorization: `Bot ${BOT_TOKEN}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      embeds: [{
-        title,
-        color,
-        fields,
-        footer: { text: `Lumenn Relay • ${world.foundry_world_name}` },
-        timestamp: new Date().toISOString(),
-      }],
-    }),
+    body: JSON.stringify({ embeds: [embed] }),
   })
 
   if (!res.ok) {

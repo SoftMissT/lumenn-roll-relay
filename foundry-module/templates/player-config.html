@@ -1,0 +1,22 @@
+<form autocomplete="off">
+  <p class="notes">{{localize "LUMENN.PlayerConfigHint"}}</p>
+  <hr>
+  <div class="form-group">
+    <label>{{localize "LUMENN.PlayerConfigDiscordId"}}</label>
+    <input type="text" name="discordId" value="{{discordId}}" placeholder="166973299702759424" maxlength="20">
+    <p class="notes">{{localize "LUMENN.PlayerConfigDiscordIdHint"}}</p>
+  </div>
+  <div class="form-group">
+    <label>{{localize "LUMENN.PlayerConfigImageUrl"}}</label>
+    <input type="text" name="imageUrl" value="{{imageUrl}}" placeholder="https://i.imgur.com/abc123.png">
+    <p class="notes">{{localize "LUMENN.PlayerConfigImageUrlHint"}}</p>
+  </div>
+  <div class="form-group">
+    <label>{{localize "LUMENN.PlayerConfigDisplayName"}}</label>
+    <input type="text" value="{{displayName}}" disabled>
+    <p class="notes">{{localize "LUMENN.PlayerConfigDisplayNameHint"}}</p>
+  </div>
+  <button type="submit">
+    <i class="fas fa-save"></i> {{localize "LUMENN.PlayerConfigSave"}}
+  </button>
+</form>

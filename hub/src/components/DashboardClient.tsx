@@ -4,8 +4,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 type WorldRow = { id: string; foundry_world_name: string; discord_guild_id: string | null; created_at: string }
-type RollRow = { id: string; world_id: string; formula: string; result: number; is_critical: boolean; is_fumble: boolean; roll_type: string | null; created_at: string; players: { display_name: string; foundry_user_id: string } | null }
-type LeaderboardEntry = { playerId: string; displayName: string; criticals: number; fumbles: number; totalRolls: number }
+type RollRow = { id: string; world_id: string; formula: string; result: number; is_critical: boolean; is_fumble: boolean; roll_type: string | null; created_at: string; players: { display_name: string; foundry_user_id: string; image_url: string | null } | null }
+type LeaderboardEntry = { playerId: string; displayName: string; imageUrl: string | null; criticals: number; fumbles: number; totalRolls: number }
 
 export default function DashboardClient({
   worlds,
@@ -221,7 +221,7 @@ function LeaderboardPanel({ entries, empty }: { entries: LeaderboardEntry[]; emp
           Leaderboard vazio
         </p>
         <p className="text-[15px] text-[var(--text-secondary)]">
-          Nenhuma rolagem registrada ainda. As rolagens aparecerão aqui quando o módulo Foundry começar a transmitir.
+          Nenhuma rolagem registrada ainda. As rolagens aparecerao aqui quando o modulo Foundry comecar a transmitir.
         </p>
       </div>
     )
@@ -248,6 +248,15 @@ function LeaderboardPanel({ entries, empty }: { entries: LeaderboardEntry[]; emp
               style={{ color: isTop3 ? 'var(--accent-gold)' : 'var(--text-tertiary)' }}
             >
               {isTop3 ? medalEmojis[i] : `${rank}.`}
+            </div>
+
+            {/* Avatar */}
+            <div className="flex-shrink-0 w-12 h-16 rounded overflow-hidden bg-[var(--canvas-deep)] border border-[var(--border-glass)]">
+              {entry.imageUrl ? (
+                <img src={entry.imageUrl} alt={entry.displayName} className="w-full h-full object-cover" style={{ aspectRatio: '9/16' }} />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-[var(--text-tertiary)] text-[10px]">?</div>
+              )}
             </div>
 
             {/* Name */}
@@ -278,17 +287,6 @@ function LeaderboardPanel({ entries, empty }: { entries: LeaderboardEntry[]; emp
                   {entry.fumbles}
                 </p>
               </div>
-            </div>
-
-            {/* Crit bar */}
-            <div className="hidden md:block w-24 h-2 rounded-full bg-[var(--canvas-deep)] overflow-hidden">
-              <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{
-                  width: `${Math.min((entry.criticals / Math.max(entry.totalRolls, 1)) * 100, 100)}%`,
-                  background: 'linear-gradient(90deg, var(--accent-gold), var(--accent-primary))',
-                }}
-              />
             </div>
           </div>
         )
@@ -400,12 +398,13 @@ function RollsPanel({ rolls, worldMap, empty }: { rolls: RollRow[]; worldMap: Ma
 }
 
 function buildFilteredLeaderboard(rolls: RollRow[]): LeaderboardEntry[] {
-  const stats = new Map<string, { displayName: string; criticals: number; fumbles: number; totalRolls: number }>()
+  const stats = new Map<string, { displayName: string; imageUrl: string | null; criticals: number; fumbles: number; totalRolls: number }>()
 
   for (const roll of rolls) {
     const pId = roll.players?.foundry_user_id ?? 'unknown'
     const pName = roll.players?.display_name ?? 'Desconhecido'
-    if (!stats.has(pId)) stats.set(pId, { displayName: pName, criticals: 0, fumbles: 0, totalRolls: 0 })
+    const pImg = roll.players?.image_url ?? null
+    if (!stats.has(pId)) stats.set(pId, { displayName: pName, imageUrl: pImg, criticals: 0, fumbles: 0, totalRolls: 0 })
     const s = stats.get(pId)!
     s.totalRolls++
     if (roll.is_critical) s.criticals++
@@ -413,7 +412,7 @@ function buildFilteredLeaderboard(rolls: RollRow[]): LeaderboardEntry[] {
   }
 
   return Array.from(stats.entries())
-    .map(([id, s]) => ({ playerId: id, displayName: s.displayName, criticals: s.criticals, fumbles: s.fumbles, totalRolls: s.totalRolls }))
+    .map(([id, s]) => ({ playerId: id, displayName: s.displayName, imageUrl: s.imageUrl, criticals: s.criticals, fumbles: s.fumbles, totalRolls: s.totalRolls }))
     .sort((a, b) => b.criticals - a.criticals || b.totalRolls - a.totalRolls)
     .slice(0, 20)
 }

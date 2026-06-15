@@ -2,6 +2,7 @@ import "./settings.js";
 import { GenericAdapter } from "./adapters/generic.js";
 import { DnD5eAdapter } from "./adapters/dnd5e.js";
 import { RelayQueue } from "./relay.js";
+import { PlayerConfigForm, needsPlayerConfig, getPlayerConfig } from "./player-config.js";
 
 let adapter;
 let relay;
@@ -20,6 +21,24 @@ Hooks.once("ready", () => {
 
   relay = new RelayQueue(token);
   console.log("Lumenn Roll Relay | Relay ativado.");
+
+  if (needsPlayerConfig()) {
+    new PlayerConfigForm().render(true);
+  }
+});
+
+// Botao de config do jogador na sidebar
+Hooks.on("getSceneControlButtons", (controls) => {
+  if (game.user.isGM) return;
+  const tokenBar = controls.find((c) => c.name === "token");
+  if (!tokenBar) return;
+  tokenBar.tools.push({
+    name: "lumenn-player-config",
+    title: game.i18n.localize("LUMENN.PlayerConfigButton"),
+    icon: "fas fa-user-gear",
+    button: true,
+    onClick: () => new PlayerConfigForm().render(true),
+  });
 });
 
 Hooks.on("createChatMessage", (message, _options, userId) => {
@@ -53,9 +72,13 @@ function processRoll(message, userId) {
   const isCritical = adapter.isCritical(rollData);
   const isFumble = adapter.isFumble(rollData);
 
+  const playerConfig = getPlayerConfig();
+
   const payload = {
     foundry_user_id: userId,
-    display_name: game.users.get(userId)?.name || "Desconhecido",
+    display_name: user.name || "Desconhecido",
+    discord_id: playerConfig.discordId || null,
+    image_url: playerConfig.imageUrl || null,
     formula: rollData.formula,
     result: rollData.total,
     is_critical: isCritical,
