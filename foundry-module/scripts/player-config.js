@@ -24,6 +24,7 @@ export class PlayerConfigForm extends FormApplication {
     return {
       discordId: flags.discordId || "",
       imageUrl: flags.imageUrl || "",
+      characterName: flags.characterName || "",
       displayName: game.user.name || "Jogador",
     };
   }
@@ -33,6 +34,7 @@ export class PlayerConfigForm extends FormApplication {
     const data = foundry.utils.expandObject(formData);
     const discordId = String(data.discordId || "").trim();
     const imageUrl = String(data.imageUrl || "").trim();
+    const characterName = String(data.characterName || "").trim().slice(0, 80);
 
     // Valida: Discord ID (17-20 digitos)
     if (discordId && !/^\d{17,20}$/.test(discordId)) {
@@ -49,6 +51,7 @@ export class PlayerConfigForm extends FormApplication {
     await game.user.setFlag("lumenn-roll-relay", "playerConfig", {
       discordId: discordId || null,
       imageUrl: imageUrl || null,
+      characterName: characterName || null,
       configuredAt: Date.now(),
     });
 
@@ -75,5 +78,6 @@ export function getPlayerConfig() {
   return {
     discordId: flags.discordId || null,
     imageUrl: flags.imageUrl || null,
+    characterName: flags.characterName || null,
   };
 }

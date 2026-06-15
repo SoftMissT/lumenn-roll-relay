@@ -69,16 +69,33 @@ function processRoll(message, userId) {
   const rollData = adapter.detectRoll(message);
   if (!rollData) return;
 
+  // Filtro: apenas rolagens que envolvem 1d20.
+  if (game.settings.get("lumenn-roll-relay", "onlyD20")) {
+    if (!/d20/i.test(rollData.formula || "")) return;
+  }
+
+  // Filtro: valor minimo do resultado total (0 = sem filtro).
+  const minRollValue = Number(game.settings.get("lumenn-roll-relay", "minRollValue")) || 0;
+  if (minRollValue > 0 && Number(rollData.total) < minRollValue) return;
+
   const isCritical = adapter.isCritical(rollData);
   const isFumble = adapter.isFumble(rollData);
 
   const playerConfig = getPlayerConfig();
 
+  // Nome de exibicao: o GM pode usar um nome customizado no leaderboard.
+  let displayName = user.name || "Desconhecido";
+  if (user.isGM) {
+    const gmDisplayName = String(game.settings.get("lumenn-roll-relay", "gmDisplayName") || "").trim();
+    if (gmDisplayName) displayName = gmDisplayName;
+  }
+
   const payload = {
     foundry_user_id: userId,
-    display_name: user.name || "Desconhecido",
+    display_name: displayName,
     discord_id: playerConfig.discordId || null,
     image_url: playerConfig.imageUrl || null,
+    character_name: playerConfig.characterName || null,
     formula: rollData.formula,
     result: rollData.total,
     is_critical: isCritical,
